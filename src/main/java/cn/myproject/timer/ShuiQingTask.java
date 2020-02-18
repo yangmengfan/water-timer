@@ -29,26 +29,71 @@ import java.util.List;
 public class ShuiQingTask {
     @Autowired
     private IFormmain1119Service iFormmain1119Service;
+    @Autowired
+    PushChargeDataImpl pushChargeData;
 
 
     @Scheduled(cron = "${job.cron}")
     public void executeShuiQingTask(){
-        PushChargeDataImpl service = new PushChargeDataImpl();
-        System.out.println("水情栏目定时任务开始执行:"+ new Date());
+        System.out.println("水情定时任务开始执行:"+ new Date());
+        executeTodayJob();
+        //
+        if(isLastExecute()){
+            executePassJob();
+        }
+        System.out.println("水情定时任务执行结束: " + new Date());
+    }
+
+    /**
+     * 更新往日失败数据
+     */
+    private void executePassJob(){
+        Formmain1119 form = new Formmain1119();
+        form.setField0001("水情电量");
+        //置空状态字段，查看今天是否执行任务
+        form.setField0003("0");
+        List<Formmain1119> formmain1119s = iFormmain1119Service.queryPage(form);
+
+        if (formmain1119s.size() == 0){
+            return ;
+        }
+
+        for (Formmain1119 form1119: formmain1119s){
+            List<WaterDto> dtolist = new ArrayList<>();
+            dtolist.addAll(WaterDtoFactory.getExcelShuiqing(form1119.getField0002()));
+            try {
+                pushChargeData.executeShuiQing(dtolist);
+                form1119.setField0003("1");
+                iFormmain1119Service.updateById(form1119);
+            } catch (Exception e) {
+                System.out.println(form1119.getField0002()+"日数据拉取失败:");
+                e.printStackTrace();
+                System.out.println("-------------------------------");
+            }
+        }
+
+
+    }
+
+
+    /**
+     * 更新今日定时任务
+     */
+    private void executeTodayJob(){
         //false代表今天未执行任务，true代表执行
         Boolean updateFlag = false;
         Boolean executFlag = false;
-        Integer count = 0; //失败重试次数
         Formmain1119 form = new Formmain1119();
         form.setField0001("水情电量");
-        //0代表未执行 1代表已执行
+
+        //执行今日任务
         try {
             List<WaterDto> dtolist = new ArrayList<>();
 
             //置空状态字段，查看今天是否执行任务
             form.setField0002(DateUtil.getTodayDateString());
             List<Formmain1119> formmain1119s = iFormmain1119Service.queryPage(form);
-             //如果当日没有执行过该任务，则执行
+            //如果当日没有执行过该任务，则执行
             if (formmain1119s.size() > 0){
                 //如果当日执行过任务且执行失败，则重新执行
                 Formmain1119 formmain1119 = formmain1119s.get(0);
@@ -61,7 +106,7 @@ public class ShuiQingTask {
                 executFlag = true;
             }
 
-            service.executeShuiQing(dtolist);
+            pushChargeData.executeShuiQing(dtolist);
 
             if (executFlag){
                 form.setField0003("1");
@@ -80,17 +125,25 @@ public class ShuiQingTask {
             //取消显示栏目错误数据
             updateErrorShow(DateUtil.getPassDate());
 
-            System.out.println("水情栏目定时任务执行结束: " + new Date());
+            System.out.println("今日定时任务执行结束: " + new Date());
         } catch (Exception e) {
             e.printStackTrace();
             form.setField0003("0");
-            Calendar calendar = Calendar.getInstance();
 
-            if (executFlag && calendar.get(Calendar.HOUR_OF_DAY) > 10){
+            if (executFlag && isLastExecute()){
                 iFormmain1119Service.save(form);
                 updateErrorShow(new Date());
             }
         }
+    }
+
+    //是否最后一次执行，如果是，返回true
+    private Boolean isLastExecute(){
+        Calendar calendar = Calendar.getInstance();
+        if (calendar.get(Calendar.HOUR_OF_DAY) > 10 && calendar.get(Calendar.MINUTE) > 49){
+            return true;
+        }
+        return false;
     }
 
     private void updateErrorShow(Date date) {

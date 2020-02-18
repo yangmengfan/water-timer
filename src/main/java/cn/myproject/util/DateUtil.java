@@ -1,7 +1,5 @@
 package cn.myproject.util;
 
-import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -16,7 +14,7 @@ public class DateUtil {
     public static String getTodayDateString(){
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
-        return "2020-02-15";
+        return sdf.format(new Date());
     }
 
     public static String getYyyyMmDdDateString(Date date){
@@ -49,5 +47,7 @@ public class DateUtil {
 
     public static void main(String[] args) {
         //System.out.println(getDate("2018-10-01 00:00:00"));
+        Calendar calendar = Calendar.getInstance();
+        System.out.println(calendar.get(Calendar.MINUTE));
     }
 }

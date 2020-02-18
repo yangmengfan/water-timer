@@ -105,10 +105,7 @@ public class PushChargeDataImpl{
         iWaterfbService = (IWaterfbService) ApplicationContextUtil.getBean("waterfbService");
          for(WaterDto dto: dtolist){
             Waterfb waterfb = getShuiQingLanmu(dto).setField0007(dto.getXuhao()).setField0009(DateUtil.getDate(dto.getStartTime())).setId(IdCreateUtil.createOnlyId());
-            if (waterfb.getField0001().equals("昨日发电量（万度）")){
 
-                waterfb.setField0002(null);
-            }
             if (!StringUtils.hasText(waterfb.getField0002()) || !StringUtils.hasText(waterfb.getField0003())){
                 //if (StringUtils.hasText(DateUtil.getYyyyMmDdDateString(waterfb.getField0009())))
                 throw new RuntimeException("小浪底或西霞院"+waterfb.getField0001()+"的值为空");
