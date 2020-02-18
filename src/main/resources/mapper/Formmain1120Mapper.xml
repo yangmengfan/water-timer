@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.myproject.mapper.Formmain1120Mapper">
+    <insert id="batchInsert" parameterType="java.util.List" useGeneratedKeys="false">
+
+        INSERT INTO formmain_1120 (id, field0001, field0002, field0003, field0004, field0005, field0006, field0007, field0009,start_date)
+        <foreach collection="list" item="item" index="index" separator="union all">
+            SELECT #{item.id},
+            #{item.field0001},
+            #{item.field0002},
+            #{item.field0003},{item.field0004},{item.field0005},{item.field0006},{item.field0007},{item.field0009},#{item.startDate} from dual
+        </foreach>
+
+    </insert>
+</mapper>

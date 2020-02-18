@@ -1,0 +1,31 @@
+server:
+    port: 8091
+    tomcat:
+        uri-encoding: utf-8
+spring:
+    datasource:
+        url: jdbc:oracle:thin:@//192.168.47.11:1521/oa_servicedb
+        username: v3xuser1
+        password: Zyv3x1128
+        driver-class-name: oracle.jdbc.OracleDriver
+#    datasource:
+#        driver-class-name: com.mysql.jdbc.Driver
+#        url: jdbc:mysql://120.78.164.163:3306/socks?useUnicode=true&characterEncoding=utf-8
+#        username: root
+#        password: 949118Aa``
+    freemarker:
+        template-loader-path: classpath:/templates/
+        charset: utf-8
+        cache: false
+        expose-request-attributes: true
+        expose-session-attributes: true
+        expose-spring-macro-helpers: true
+        suffix: .ftl
+mybatis-plus:
+    mapper-locations: classpath*:/mapper/*.xml
+    configuration:
+        log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+#0 0 8,15 * * ?  每天8,15点执行
+# 0 10 18 * * ?     每天上午10:15触发
+job:
+    cron: 0 0/10 8,9,10 * * ?
