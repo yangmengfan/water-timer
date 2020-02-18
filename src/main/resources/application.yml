@@ -29,3 +29,4 @@ mybatis-plus:
 # 0 10 18 * * ?     每天上午10:15触发
 job:
     cron: 0 0/10 8,9,10 * * ?
+    excelPosition:

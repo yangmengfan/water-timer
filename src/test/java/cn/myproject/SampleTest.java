@@ -2,6 +2,7 @@ package cn.myproject;
 
 
 import cn.myproject.timer.ShuiQingTask;
+import cn.myproject.util.ExcelUtil;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,7 @@ public class SampleTest {
     @Test
     public void testSelect() {
         shuiQingTask.executeShuiQingTask();
+        //ExcelUtil.getSheet();
     }
 
 }

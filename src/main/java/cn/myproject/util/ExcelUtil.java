@@ -2,11 +2,17 @@ package cn.myproject.util;
 
 import jxl.*;
 import jxl.read.biff.BiffException;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.stereotype.Component;
+
 import java.io.*;
 import java.util.Calendar;
 import java.util.Date;
 
+@ConfigurationProperties(prefix = "job")
+@Component
 public class ExcelUtil {
+    String excelPosition;
     /*
      * sh: Excel文件中的sheet
      */
@@ -49,4 +55,11 @@ public class ExcelUtil {
         System.out.println(calendar.get(Calendar.HOUR_OF_DAY));
     }
 
+    public String getExcelPosition() {
+        return excelPosition;
+    }
+
+    public void setExcelPosition(String excelPosition) {
+        this.excelPosition = excelPosition;
+    }
 }
