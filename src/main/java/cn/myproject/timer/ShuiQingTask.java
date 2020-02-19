@@ -140,7 +140,7 @@ public class ShuiQingTask {
     //是否最后一次执行，如果是，返回true
     private Boolean isLastExecute(){
         Calendar calendar = Calendar.getInstance();
-        if (calendar.get(Calendar.HOUR_OF_DAY) > 10 && calendar.get(Calendar.MINUTE) > 49){
+        if (calendar.get(Calendar.HOUR_OF_DAY) == 10 && calendar.get(Calendar.MINUTE) > 49){
             return true;
         }
         return false;
