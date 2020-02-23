@@ -12,7 +12,7 @@ import java.util.Date;
 @ConfigurationProperties(prefix = "job")
 @Component
 public class ExcelUtil {
-    String excelPosition;
+    static String excelPosition;
     /*
      * sh: Excel文件中的sheet
      */
@@ -21,9 +21,8 @@ public class ExcelUtil {
         //Test1.xls 为你放在java项目下的文件名
         Workbook book = null;
         try {
-            ///opt/Seeyon/watertime/xldxixiayuan.xls
-            //E:/workproject/water-timer/src/main/resources/xldxixiayuan.xls
-            book = Workbook.getWorkbook(new File("E:/workproject/water-timer/src/main/resources/xldxixiayuan.xls"));
+
+            book = Workbook.getWorkbook(new File(excelPosition));
         } catch (IOException e) {
             e.printStackTrace();
         } catch (BiffException e) {
