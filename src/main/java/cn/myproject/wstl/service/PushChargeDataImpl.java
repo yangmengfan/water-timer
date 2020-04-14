@@ -39,6 +39,7 @@ public class PushChargeDataImpl{
         add("30001016300100602");
         add("30001016300101000");
         add("30001016300151000");
+        add("30001016300100604");
     }};
     //库水位senid列表
     public static final HashSet<Long> kushuiweiSenSet = new HashSet<Long>() {{

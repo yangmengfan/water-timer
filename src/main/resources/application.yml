@@ -25,10 +25,10 @@ mybatis-plus:
     mapper-locations: classpath*:/mapper/*.xml
     configuration:
         log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
-#0 0 8,15 * * ?  每天8,15点执行
+#0 0/10 8,9,10 * * ?  每天8,15点执行
 # 0 10 18 * * ?     每天上午10:15触发
 job:
     cron: 0 0/10 8,9,10 * * ?
     excelPosition: /opt/Seeyon/watertime/xldxixiayuan.xls
 #    /opt/Seeyon/watertime/xldxixiayuan.xls
-# E:/workproject/water-timer/src/main/resources/xldxixiayuan.xls
+# E:/work/gitproject/water-timer/src/main/resources/xldxixiayuan.xls
